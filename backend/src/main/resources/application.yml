@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: backend
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/linkedhub?createDatabaseIfNotExist=true
+    username: root
+    password: secret
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  mail:
+    host: localhost
+    port: 1025
+    properties:
+      mail.smtp.auth: false
+jwt:
+  secret:
+    key: blj8MNM/hiV/8XJ7kh9SuSOIiseqjSIlP+zLigU1N24kp0ISrFWbEQ==
+
