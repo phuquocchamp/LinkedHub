@@ -1,16 +1,25 @@
 package com.phuquocchamp.backend.domain.authentication.controller;
 
+import java.io.UnsupportedEncodingException;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.phuquocchamp.backend.domain.authentication.dto.AuthenticationRequest;
 import com.phuquocchamp.backend.domain.authentication.dto.AuthenticationResponse;
 import com.phuquocchamp.backend.domain.authentication.model.AuthUser;
 import com.phuquocchamp.backend.domain.authentication.service.AuthenticationService;
+
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
