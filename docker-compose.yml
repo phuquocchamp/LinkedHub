@@ -1,6 +1,6 @@
-version: "3.8"
 services:
   backend:
+    container_name: backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -24,6 +24,7 @@ services:
       - linkedhub-network
 
   mysql:
+    container_name: mysql_db
     image: mysql:latest
     environment:
       MYSQL_DATABASE: linkedhub
@@ -42,6 +43,7 @@ services:
       - linkedhub-network
 
   mailhog:
+    container_name: mailhog
     image: mailhog/mailhog
     ports:
       - "1025:1025"

@@ -1,0 +1,35 @@
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    privileged: true
+    user: root
+    ports:
+      - "7080:8080"
+      - "50000:50000"
+    container_name: jenkins
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/local/bin/docker
+      - ./:/app
+    networks:
+      - ci/cd-network
+
+  dind:
+    container_name: dind
+    image: docker:dind
+    privileged: true
+    environment:
+      - DOCKER_TLS_CERTDIR=
+    volumes:
+      - dind-data:/var/lib/docker
+    networks:
+      - ci/cd-network
+
+volumes:
+  jenkins-data:
+  dind-data:
+
+networks:
+  ci/cd-network:
+    driver: bridge
