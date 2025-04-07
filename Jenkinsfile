@@ -14,7 +14,7 @@ pipeline {
             steps {
                 dir('backend') {
                     sh "./gradlew clean build -x test --no-daemon"
-                }
+                } 
             }
         }
 
@@ -51,6 +51,7 @@ pipeline {
     post {
         always {
             sh 'docker-compose -f docker-compose.yml down'
+            sh 'docker-compose -f docker-compose.yml up'
         }
         success {
             echo 'Deployment successful!'
