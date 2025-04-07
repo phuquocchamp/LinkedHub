@@ -13,22 +13,18 @@ pipeline {
         stage('Build Backend') {
             steps {
                 dir('backend') {
+                    sh "chmod +x ./gradlew"
                     sh "./gradlew clean build -x test --no-daemon"
                 }
             }
         }
 
         stage('Build Docker Images') {
-            parallel {
-                stage('Backend Image') {
-                    steps {
-                        dir('backend') {
-                            sh "docker build -t ${DOCKER_REGISTRY}/linkedhub-backend:latest ."
-                        }
-                    }
+            steps {
+                dir('backend') {
+                    sh "docker build -t ${DOCKER_REGISTRY}/linkedhub-backend:latest ."
                 }
-            
-            }
+            }            
         }
 
         stage('Push Docker Images') {
@@ -36,7 +32,6 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh "docker login -u $DOCKER_USER -p $DOCKER_PASS"
                     sh "docker push ${DOCKER_REGISTRY}/linkedhub-backend:latest"
-                    // sh 'docker push ${DOCKER_REGISTRY}/linkedhub-frontend:latest'
                 }
             }
         }
@@ -49,9 +44,6 @@ pipeline {
         }
     }
     post {
-        always {
-            sh 'docker-compose -f docker-compose.yml down'
-        }
         success {
             echo 'Deployment successful!'
         }
