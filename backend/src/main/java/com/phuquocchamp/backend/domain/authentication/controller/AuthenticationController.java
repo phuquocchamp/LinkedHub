@@ -32,7 +32,7 @@ public class AuthenticationController {
 
 
     @GetMapping("/user")
-    public AuthUser getUser(@RequestAttribute("authUser") AuthUser authUser) {
+    public AuthUser getUser(@RequestAttribute("authenticated-user") AuthUser authUser) {
         return authenticationService.getUser(authUser.getEmail());
     }
 

@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
 @Component
 public class AuthenticationFilter extends HttpFilter {
     private final List<String> unsecuredEndpoints = Arrays.asList(
@@ -35,7 +37,7 @@ public class AuthenticationFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         response.addHeader("Access-Control-Allow-Origin", "*");
-        response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+        response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
         if("OPTIONS".equalsIgnoreCase(request.getMethod())) {
