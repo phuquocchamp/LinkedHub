@@ -91,7 +91,11 @@ export default function VerifyEmail() {
             setIsLoading(false);
           }}
         >
-          <Input id="code" label="Code Verification"></Input>
+          <Input
+            id="code"
+            label="Code Verification"
+            onFocus={() => setErrorMessage("")}
+          ></Input>
           {errorMessage && <p className={classes.error}>{errorMessage}</p>}
           {message && <p className={classes.message}>{message}</p>}
           <Button type="submit" disabled={isLoading}>
