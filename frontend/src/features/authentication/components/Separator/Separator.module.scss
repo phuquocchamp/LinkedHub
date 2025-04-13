@@ -1,0 +1,16 @@
+.root {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-block: 1rem;
+  gap: 1rem;
+
+  &::before,
+  &::after {
+    content: "";
+    display: block;
+    height: 1px;
+    margin: 1rem 0;
+    background-color: rgb(0, 0, 0, 0.15);
+  }
+}
