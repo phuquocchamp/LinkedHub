@@ -24,13 +24,33 @@ public class AuthUser {
     private Boolean emailVerified = false;
     private String emailVerificationToken;
     private LocalDateTime emailVerificationTokenExpiryDate = null;
+
     @JsonIgnore
     private String password;
     private String passwordResetToken;
     private LocalDateTime passwordResetTokenExpiryDate = null;
 
+    private String firstName;
+    private String lastName;
+    private String company;
+    private String position;
+    private String location;
+
+    private Boolean profileComplete = false;
+
     public AuthUser(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    @PreUpdate()
+    private void updateProfileCompleteStatus(){
+        this.profileComplete = (
+            this.firstName != null && this.firstName.trim().isEmpty()
+            && this.lastName != null && this.lastName.trim().isEmpty()
+            && this.company != null && this.company.trim().isEmpty()
+            && this.position != null && this.position.trim().isEmpty()
+            && this.location != null && this.location.trim().isEmpty()
+        );
     }
 }

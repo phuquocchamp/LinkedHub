@@ -2,6 +2,7 @@ package com.phuquocchamp.backend.domain.authentication.service;
 
 import com.phuquocchamp.backend.domain.authentication.dto.AuthenticationRequest;
 import com.phuquocchamp.backend.domain.authentication.dto.AuthenticationResponse;
+import com.phuquocchamp.backend.domain.authentication.dto.ProfileResponse;
 import com.phuquocchamp.backend.domain.authentication.model.AuthUser;
 import com.phuquocchamp.backend.domain.authentication.repository.AuthenticationRepository;
 import com.phuquocchamp.backend.domain.authentication.utils.EmailService;
@@ -9,6 +10,7 @@ import com.phuquocchamp.backend.domain.authentication.utils.Encoder;
 import com.phuquocchamp.backend.domain.authentication.utils.JsonWebToken;
 import jakarta.mail.MessagingException;
 import org.antlr.v4.runtime.Token;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ public class AuthenticationService {
     private final Encoder encoder;
     private final JsonWebToken jsonWebToken;
     private final EmailService emailService;
+    private final ModelMapper modelMapper;
     private final AuthenticationRepository authenticationRepository;
 
     private enum TokenType {
@@ -35,10 +38,11 @@ public class AuthenticationService {
         PASSWORD_RESET
     }
 
-    public AuthenticationService(Encoder encoder, JsonWebToken jsonWebToken, EmailService emailService, AuthenticationRepository authenticationRepository) {
+    public AuthenticationService(Encoder encoder, JsonWebToken jsonWebToken, EmailService emailService, ModelMapper modelMapper, AuthenticationRepository authenticationRepository) {
         this.encoder = encoder;
         this.jsonWebToken = jsonWebToken;
         this.emailService = emailService;
+        this.modelMapper = modelMapper;
         this.authenticationRepository = authenticationRepository;
     }
 
@@ -153,5 +157,17 @@ public class AuthenticationService {
         }catch (Exception e){
             LOGGER.info("Failed to send email to: {}: {}", to, e.getMessage());
         }
+    }
+
+    public ProfileResponse updateUserProfile(Long id, String firstName, String lastName, String company, String position, String location) {
+        AuthUser authUser = authenticationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        authUser.setFirstName(firstName);
+        authUser.setLastName(lastName);
+        authUser.setCompany(company);
+        authUser.setPosition(position);
+        authUser.setLocation(location);
+
+        AuthUser savedUser = authenticationRepository.save(authUser);
+        return modelMapper.map(savedUser, ProfileResponse.class);
     }
 }
